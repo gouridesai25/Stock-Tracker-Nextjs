@@ -8,6 +8,7 @@ import Papa from "papaparse";
 import * as XLSX from "xlsx";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { v4 as uuidv4 } from "uuid";
 
 import { ArrowUpTrayIcon, DocumentIcon } from "@heroicons/react/24/outline";
 
@@ -60,7 +61,7 @@ export default function UploadPage() {
       }
 
       uploaded.push({
-        id: crypto.randomUUID(),
+        id: uuidv4(),
         file,
         name: file.name,
         date: new Date().toLocaleDateString("en-GB", {
