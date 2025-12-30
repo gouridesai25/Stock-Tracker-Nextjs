@@ -234,13 +234,16 @@ export default function UploadPage() {
             byDate[dateOnly] = (byDate[dateOnly] || 0) + pnlPct;
           });
 
-          // Calculate win rate based on trades, not days
-          const winRate =
-            totalTrades === 0
-              ? 0
-              : Number(((winningTrades / totalTrades) * 100).toFixed(2));
+          const { winRate, sortedByDate } = calculateStatsFromByDate(byDate);
 
-          const { sortedByDate } = calculateStatsFromByDate(byDate);
+          resolve({
+            totalProfitPct,
+            totalLossPct,
+            netPnLPct: totalProfitPct + totalLossPct,
+            byDate,
+            winRate, // ✅ day-based win rate
+            sortedByDate,
+          });
 
           resolve({
             totalProfitPct,
@@ -301,11 +304,11 @@ export default function UploadPage() {
     });
 
     // Calculate win rate based on trades
-    const winRate =
-      totalTrades === 0
-        ? 0
-        : Number(((winningTrades / totalTrades) * 100).toFixed(2));
-    const { sortedByDate } = calculateStatsFromByDate(byDate);
+    // const winRate =
+    //   totalTrades === 0
+    //     ? 0
+    //     : Number(((winningTrades / totalTrades) * 100).toFixed(2));
+    const { winRate, sortedByDate } = calculateStatsFromByDate(byDate);
 
     return {
       totalProfitPct,
