@@ -414,6 +414,17 @@ export default function UploadPage() {
     // router.push(`/analysis/${analysisId}`);
     router.push(`/analysis?analysisId=${analysisId}`);
   };
+  const allSelected = files.length > 0 && selectedFiles.length === files.length;
+
+  const isIndeterminate =
+    selectedFiles.length > 0 && selectedFiles.length < files.length;
+  const toggleSelectAll = () => {
+    if (allSelected) {
+      setSelectedFiles([]);
+    } else {
+      setSelectedFiles(files.filter((f) => f.file));
+    }
+  };
 
   return (
     <div className="p-8 bg-gray-50 min-h-screen">
@@ -638,13 +649,34 @@ export default function UploadPage() {
       {/* Files Table */}
       <div className="bg-white rounded-xl shadow-sm border">
         <table className="w-full text-left">
-          <thead className="border-b bg-gray-50">
+          {/* <thead className="border-b bg-gray-50">
             <tr>
               <th className="p-4 text-sm font-semibold text-gray-600">Name</th>
               <th className="p-4 text-sm font-semibold text-gray-600">Date</th>
               <th className="p-4 text-sm font-semibold text-gray-600">Size</th>
             </tr>
+          </thead> */}
+          <thead className="border-b bg-gray-50">
+            <tr>
+              <th className="p-4 text-sm font-semibold text-gray-600">
+                <div className="flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={allSelected}
+                    ref={(el) => {
+                      if (el) el.indeterminate = isIndeterminate;
+                    }}
+                    onChange={toggleSelectAll}
+                    className="w-4 h-4 accent-purple-600"
+                  />
+                  Select All
+                </div>
+              </th>
+              <th className="p-4 text-sm font-semibold text-gray-600">Date</th>
+              <th className="p-4 text-sm font-semibold text-gray-600">Size</th>
+            </tr>
           </thead>
+
           <tbody>
             {files.length === 0 ? (
               <tr>
